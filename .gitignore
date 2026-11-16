@@ -39,6 +39,16 @@ math500_test.json
 math_train.json
 *.jsonl
 
+# --- Local study-box additions (2026-11-17, AutoDL 4090 server) ---
+# Per-chapter `qwen3` entries are ABSOLUTE symlinks to the server's weight dir
+# (/root/autodl-tmp/...); meaningless on any other machine.
+qwen3
+# Teacher distillation data (99 MB, regenerable via the book's ch08 scripts;
+# too close to GitHub's 100 MB hard limit to track).
+ch08/04_train_with_distillation/distill_data.json
+# Patch backups (notebook display/uv patches, utils.py local-first cache).
+*.bak-*
+
 # Temporary OS files
 .DS_Store
 

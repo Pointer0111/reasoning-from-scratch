@@ -56,6 +56,15 @@ def download_file(url, out_dir=".", backup_url=None):
     filename = Path(urlparse(url).path).name
     dest = out_dir / filename
 
+    # Local-first cache: if the destination already exists and is non-empty,
+    # use it directly instead of probing the remote. try_download() below
+    # checks the local copy only AFTER a successful remote GET, so an
+    # offline box or a 404 backup URL would raise despite the file being
+    # here. Mirrors download_from_github()'s `if out.exists(): return out`.
+    if dest.exists() and dest.stat().st_size > 0:
+        print(f"✓ {dest} already present (local cache)")
+        return dest
+
     def try_download(u):
         try:
             with requests.get(u, stream=True, timeout=30) as r:
